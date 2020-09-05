@@ -296,6 +296,20 @@ class HtmlToSpannedConverter implements ContentHandler {
         }
     }
 
+    private static void endCode(Editable text) {
+        int len = text.length();
+        Code code = getLast(text, Code.class);
+        if (code != null) {
+            int spanStart = text.getSpanStart(code);
+            int spanEnd = text.length();
+            CharSequence codeContent = text.subSequence(spanStart, spanEnd);
+            text.removeSpan(code);
+            text.setSpan(new ZCodeSpan(codeContent), spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            URLSpan urlSpan = new URLSpan("code://" + codeContent);
+            text.setSpan(urlSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
     private static void endCodeBlock(Editable text) {
         int len = text.length();
         Code code = getLast(text, Code.class);
@@ -552,7 +566,8 @@ class HtmlToSpannedConverter implements ContentHandler {
             if (mPreStart) {
                 endCodeBlock(mSpannableStringBuilder);
             } else {
-                end(mSpannableStringBuilder, Code.class, new ZCodeSpan());
+//                end(mSpannableStringBuilder, Code.class, new ZCodeSpan());
+                endCode(mSpannableStringBuilder);
             }
             mCodeStart = false;
         } else if (tag.equalsIgnoreCase("pre")) {

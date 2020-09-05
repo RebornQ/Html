@@ -28,8 +28,15 @@ public class ZCodeSpan extends ReplacementSpan {
     private int mHeight;
     private int mTextColor;
 
+    private CharSequence mText;
+
     public ZCodeSpan() {
         this(DEFAULT_BACKGROUND_COLOR, DEFAULT_TEXT_COLOR);
+    }
+
+    public ZCodeSpan(CharSequence mText) {
+        this(DEFAULT_BACKGROUND_COLOR, DEFAULT_TEXT_COLOR);
+        this.mText = mText;
     }
 
     public ZCodeSpan(int backgroundColor, int textColor) {
@@ -48,8 +55,12 @@ public class ZCodeSpan extends ReplacementSpan {
         float size = paint.getTextSize();
         paint.setTextSize(size * TEXT_SIZE_SCALE);
         paint.setTypeface(Typeface.MONOSPACE);
-
-        mWidth = (int) (paint.measureText(text, start, end) + PADDING_HORIZONTAL * 2 + MARGIN * 2);
+        if (mText != null && !mText.equals("")) {
+            text = mText;
+            mWidth = (int) (paint.measureText(text, 0, mText.length()) + PADDING_HORIZONTAL * 2 + MARGIN * 2);
+        } else {
+            mWidth = (int) (paint.measureText(text, start, end) + PADDING_HORIZONTAL * 2 + MARGIN * 2);
+        }
         if (fm != null) {
             fm.top -= PADDING_VERTICAL;
             fm.bottom += PADDING_VERTICAL;
@@ -70,7 +81,12 @@ public class ZCodeSpan extends ReplacementSpan {
 
         int color = paint.getColor();
         paint.setColor(mTextColor);
-        canvas.drawText(text, start, end, x + MARGIN + PADDING_HORIZONTAL, y - mHeight * (1 - TEXT_SIZE_SCALE) * 0.5f, paint);
+        if (mText != null && !mText.equals("")) {
+            text = mText;
+            canvas.drawText(text, 0, mText.length(), x + MARGIN + PADDING_HORIZONTAL, y - mHeight * (1 - TEXT_SIZE_SCALE) * 0.5f, paint);
+        } else {
+            canvas.drawText(text, start, end, x + MARGIN + PADDING_HORIZONTAL, y - mHeight * (1 - TEXT_SIZE_SCALE) * 0.5f, paint);
+        }
         paint.setColor(color);
 
         paint.setTextSize(size);
