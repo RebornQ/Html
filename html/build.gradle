@@ -1,4 +1,4 @@
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'com.android.library'
 
 def version_code = 3
@@ -31,7 +31,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.novoda:bintray-release:0.8.1"
+//        classpath "com.novoda:bintray-release:0.8.1"
     }
 }
 
@@ -40,7 +40,7 @@ dependencies {
     implementation group: 'org.ccil.cowan.tagsoup', name: 'tagsoup', version: '1.2.1'
 }
 
-publish {
+/*publish {
 
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -54,4 +54,4 @@ publish {
     publishVersion = version_name
     desc = 'Html parser based on native Html parser'
     website = 'https://github.com/zzhoujay/Html'
-}
+}*/
